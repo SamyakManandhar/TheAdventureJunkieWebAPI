@@ -1,3 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using TheAdventureJunkieWebAPI.Contracts;
+using TheAdventureJunkieWebAPI.Data;
+using TheAdventureJunkieWebAPI.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +12,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<TheAdventureJunkieDbContext>(options => { options.UseSqlServer(builder.Configuration["ConnectionStrings:TheAdventureJunkieDbContextConnection"]); 
+});
+builder.Services.AddScoped<IEventRepository, EventRepository>();
 
 var app = builder.Build();
 
