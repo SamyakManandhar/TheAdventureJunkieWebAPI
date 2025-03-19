@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using TheAdventureJunkieWebAPI.Contracts;
 using TheAdventureJunkieWebAPI.Models.DtoModels;
 
@@ -9,33 +10,31 @@ namespace TheAdventureJunkieWebAPI.Controllers
     public class EventController : ControllerBase
     {
         private readonly IEventRepository _eventRepository;
-        public EventController(IEventRepository eventRepository)
+        private readonly IMapper _mapper;
+
+        public EventController(IEventRepository eventRepository, IMapper mapper)
         {
             _eventRepository = eventRepository ?? throw new ArgumentNullException(nameof(eventRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EventDto>>> GetEvents()
         {
             var events = await _eventRepository.AllEventsAsync();
-            var results = new List<EventDto>();
-            foreach (var evt in events)
+            return Ok(_mapper.Map<IEnumerable<EventDto>>(events));
+        }
+
+        [HttpGet("{eventId}")]
+        public async Task<ActionResult<EventDto>> GetEvent(int eventId)
+        {
+            var evt = await _eventRepository.GetEventByIdAsync(eventId);
+            if (evt == null)
             {
-                results.Add(new EventDto
-                {
-                    EventId = evt.EventId,
-                    Name = evt.Name,
-                    ShortDescription = evt.ShortDescription,
-                    LongDescription = evt.LongDescription,
-                    Price = evt.Price,
-                    ImageUrl = evt.ImageUrl,
-                    EventLocation = evt.EventLocation,
-                    EventDateTime = evt.EventDateTime,
-                    CategoryId = evt.CategoryId,
-                    Category = evt.Category
-                });
+                return NotFound();
             }
-            return Ok(results);
+            return Ok(_mapper.Map<EventDto>(evt));
         }
     }
 }
