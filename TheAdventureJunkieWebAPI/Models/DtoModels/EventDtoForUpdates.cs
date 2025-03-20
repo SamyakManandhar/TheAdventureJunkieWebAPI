@@ -1,13 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TheAdventureJunkieWebAPI.Models.DtoModels
 {
-    public class EventDto
+    public class EventDtoForUpdates
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int EventId { get; set; }
+
         [Required(ErrorMessage = "You should provide a name value.")]
         [StringLength(50, ErrorMessage = "Name cannot be longer than 50 characters.")]
         public string Name { get; set; } = null!;
@@ -32,7 +29,7 @@ namespace TheAdventureJunkieWebAPI.Models.DtoModels
         public DateTime EventDateTime { get; set; }
 
         [Required(ErrorMessage = "Category ID is required.")]
-        [Range(1, 3, ErrorMessage = "Category ID must be greater than zero and less than 4.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Category ID must be greater than zero.")]
         public int CategoryId { get; set; }
     }
 }
