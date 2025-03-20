@@ -6,7 +6,8 @@ namespace TheAdventureJunkieWebAPI.Profiles
     {
         public EventProfile()
         {
-            CreateMap<Models.Event, Models.DtoModels.EventDto>();
+            CreateMap<Models.Event, Models.DtoModels.EventDto>().ReverseMap();
+            CreateMap<Models.DtoModels.EventDtoForUpdates, Models.Event>().ReverseMap();
         }
     }
 }
