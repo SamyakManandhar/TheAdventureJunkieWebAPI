@@ -15,7 +15,7 @@ namespace TheAdventureJunkieWebAPI.Services
         }
         public async Task<IEnumerable<Event>> AllEventsAsync()
         { 
-            return await _context.Events.OrderBy(e=>e.Name).ToListAsync();
+            return await _context.Events.OrderBy(e=>e.EventId).ToListAsync();
         }
 
         public async Task CreateEventAsync(Event evt)

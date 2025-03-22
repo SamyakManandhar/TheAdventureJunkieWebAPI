@@ -29,7 +29,7 @@ namespace TheAdventureJunkieWebAPI.Models.DtoModels
         public DateTime EventDateTime { get; set; }
 
         [Required(ErrorMessage = "Category ID is required.")]
-        [Range(1, int.MaxValue, ErrorMessage = "Category ID must be greater than zero.")]
+        [Range(1, 3, ErrorMessage = "Category ID must be greater than zero.")]
         public int CategoryId { get; set; }
     }
 }
