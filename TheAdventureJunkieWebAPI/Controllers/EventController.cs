@@ -45,7 +45,7 @@ namespace TheAdventureJunkieWebAPI.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<EventDto>> CreateEvent(EventDto eventDto)
+        public async Task<ActionResult<EventDto>> CreateEvent([FromBody] EventDto eventDto)
         {
             var evt = _mapper.Map<Event>(eventDto);
             await _eventRepository.CreateEventAsync(evt);
@@ -55,7 +55,7 @@ namespace TheAdventureJunkieWebAPI.Controllers
         [HttpPut("{eventId}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> UpdateEvent(int eventId, EventDtoForUpdates eventUpdateDto)
+        public async Task<ActionResult> UpdateEvent(int eventId, [FromBody] EventDtoForUpdates eventUpdateDto)
         {
             var evt = await _eventRepository.GetEventByIdAsync(eventId);
             if (evt == null)
@@ -71,12 +71,12 @@ namespace TheAdventureJunkieWebAPI.Controllers
         }
 
 
- 
+
         [HttpPatch("{eventId}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> PartiallyUpdateEvent(int eventId, JsonPatchDocument<EventDtoForUpdates> patchDocument)
+        public async Task<ActionResult> PartiallyUpdateEvent(int eventId, [FromBody] JsonPatchDocument<EventDtoForUpdates> patchDocument)
         {
             var evt = await _eventRepository.GetEventByIdAsync(eventId);
             if (evt == null)

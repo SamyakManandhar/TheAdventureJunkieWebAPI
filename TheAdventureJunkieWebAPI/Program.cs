@@ -16,6 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<TheAdventureJunkieDbContext>(options => { options.UseSqlServer(builder.Configuration["ConnectionStrings:TheAdventureJunkieDbContextConnection"]); 
 });
 builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
