@@ -4,7 +4,9 @@ namespace TheAdventureJunkieWebAPI.Models.DtoModels
 {
     public class EventDtoForUpdates
     {
-
+        /// <summary>
+        /// Data Transfer Object for Event for Updates.
+        /// </summary>
         [Required(ErrorMessage = "You should provide a name value.")]
         [StringLength(50, ErrorMessage = "Name cannot be longer than 50 characters.")]
         public string Name { get; set; } = null!;

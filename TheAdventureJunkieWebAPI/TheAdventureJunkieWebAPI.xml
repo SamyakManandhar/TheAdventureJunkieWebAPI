@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TheAdventureJunkieWebAPI</name>
+    </assembly>
+    <members>
+        <member name="M:TheAdventureJunkieWebAPI.Controllers.CategoryController.GetAllCategories(System.Boolean,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Get all categories with corresponding events. Includes Query parameters for Filtering, Searching and Pagination.
+            </summary>
+            <param name="includeEvents"></param>
+            <param name="filterName"></param>
+            <param name="searchQuery"></param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TheAdventureJunkieWebAPI.Controllers.EventController.GetEvents">
+            <summary>
+            Get all events
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TheAdventureJunkieWebAPI.Controllers.EventController.GetEvent(System.Int32)">
+            <summary>
+            Get a single event
+            </summary>
+            <param name="eventId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TheAdventureJunkieWebAPI.Controllers.EventController.CreateEvent(TheAdventureJunkieWebAPI.Models.DtoModels.EventDto)">
+            <summary>
+            Create a new event
+            </summary>
+            <param name="eventDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TheAdventureJunkieWebAPI.Controllers.EventController.UpdateEvent(System.Int32,TheAdventureJunkieWebAPI.Models.DtoModels.EventDtoForUpdates)">
+            <summary>
+            Update an event
+            </summary>
+            <param name="eventId"></param>
+            <param name="eventUpdateDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TheAdventureJunkieWebAPI.Controllers.EventController.PartiallyUpdateEvent(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{TheAdventureJunkieWebAPI.Models.DtoModels.EventDtoForUpdates})">
+            <summary>
+            Partially update an event
+            </summary>
+            <param name="eventId"></param>
+            <param name="patchDocument"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TheAdventureJunkieWebAPI.Controllers.EventController.DeleteEvent(System.Int32)">
+            <summary>
+            Delete an event
+            </summary>
+            <param name="eventId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TheAdventureJunkieWebAPI.Models.DtoModels.CategoryDto">
+            <summary>
+            Data Transfer Object for Category.
+            </summary>
+        </member>
+        <member name="P:TheAdventureJunkieWebAPI.Models.DtoModels.CategoryDto.Events">
+            <summary>
+            Collection of events associated with the category.
+            </summary>
+        </member>
+        <member name="T:TheAdventureJunkieWebAPI.Models.DtoModels.CategoryDtoWithoutEvents">
+            <summary>
+            Data Transfer Object for Category without Events.
+            </summary>
+        </member>
+        <member name="P:TheAdventureJunkieWebAPI.Models.DtoModels.EventDto.EventId">
+            <summary>
+            Data Transfer Object for Event.
+            </summary>
+        </member>
+        <member name="P:TheAdventureJunkieWebAPI.Models.DtoModels.EventDtoForUpdates.Name">
+            <summary>
+            Data Transfer Object for Event for Updates.
+            </summary>
+        </member>
+    </members>
+</doc>

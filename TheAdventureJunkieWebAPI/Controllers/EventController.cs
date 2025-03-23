@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,8 @@ using TheAdventureJunkieWebAPI.Models.DtoModels;
 namespace TheAdventureJunkieWebAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("v{version:apiVersion}/[controller]")]
+    [ApiVersion(1)]
     public class EventController : ControllerBase
     {
         private readonly IEventRepository _eventRepository;
@@ -22,6 +24,10 @@ namespace TheAdventureJunkieWebAPI.Controllers
 
         }
 
+        /// <summary>
+        /// Get all events
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<EventDto>>> GetEvents()
@@ -30,6 +36,11 @@ namespace TheAdventureJunkieWebAPI.Controllers
             return Ok(_mapper.Map<IEnumerable<EventDto>>(events));
         }
 
+        /// <summary>
+        /// Get a single event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         [HttpGet("{eventId}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -43,6 +54,11 @@ namespace TheAdventureJunkieWebAPI.Controllers
             return Ok(_mapper.Map<EventDto>(evt));
         }
 
+        /// <summary>
+        /// Create a new event
+        /// </summary>
+        /// <param name="eventDto"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<EventDto>> CreateEvent([FromBody] EventDto eventDto)
@@ -52,6 +68,12 @@ namespace TheAdventureJunkieWebAPI.Controllers
             return CreatedAtAction(nameof(GetEvent), new { eventId = evt.EventId }, _mapper.Map<EventDto>(evt));
         }
 
+        /// <summary>
+        /// Update an event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="eventUpdateDto"></param>
+        /// <returns></returns>
         [HttpPut("{eventId}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -70,8 +92,12 @@ namespace TheAdventureJunkieWebAPI.Controllers
             }
         }
 
-
-
+        /// <summary>
+        /// Partially update an event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="patchDocument"></param>
+        /// <returns></returns>
         [HttpPatch("{eventId}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -101,6 +127,11 @@ namespace TheAdventureJunkieWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete an event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         [HttpDelete("{eventId}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
