@@ -4,7 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace TheAdventureJunkieWebAPI.Models.DtoModels
 {
     public class EventDto
-    {
+    {/// <summary>
+     /// Data Transfer Object for Event.
+     /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EventId { get; set; }

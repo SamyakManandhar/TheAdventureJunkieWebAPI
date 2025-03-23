@@ -5,6 +5,6 @@ namespace TheAdventureJunkieWebAPI.Contracts
     public interface ICategoryRepository
     {
         Task<IEnumerable<Category>> AllCategoriesAsync();
-        Task<IEnumerable<Category>> AllCategoriesWithEventsAsync();
+        Task<IEnumerable<Category>> AllCategoriesAsync(string? name, string? searchQuery, int pageNumber, int pageSize);
     }
 }
