@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using TheAdventureJunkieWebAPI.Contracts;
@@ -37,7 +38,14 @@ builder.Services.AddApiVersioning(options =>
     options.DefaultApiVersion = new ApiVersion(1, 0);
 }).AddMvc();
 
+builder.Services.Configure<ForwardedHeadersOptions>(ForwardedHeadersOptions =>
+{
+    ForwardedHeadersOptions.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
+
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
