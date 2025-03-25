@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using System.Reflection;
 using TheAdventureJunkieWebAPI.Contracts;
 using TheAdventureJunkieWebAPI.Data;
@@ -20,6 +21,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
 
     setupAction.IncludeXmlComments(xmlCommentsFullPath);
+    setupAction.SwaggerDoc("v1", new OpenApiInfo { Title = "TheAdventureJunkieWebAPI", Version = "v1" });
 });
 
 builder.Services.AddDbContext<TheAdventureJunkieDbContext>(options =>
@@ -51,7 +53,7 @@ app.UseForwardedHeaders();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TheAdventureJunkieWebAPI v1"));
 }
 
 app.UseHttpsRedirection();
