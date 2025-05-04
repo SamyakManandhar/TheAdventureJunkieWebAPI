@@ -14,12 +14,12 @@ namespace TheAdventureJunkieWebAPI.Controllers
     [ApiVersion(1)]
     public class EventController : ControllerBase
     {
-        private readonly IEventRepository _eventRepository;
+        private readonly IEventCacheService _eventCacheService;
         private readonly IMapper _mapper;
 
-        public EventController(IEventRepository eventRepository, IMapper mapper)
+        public EventController(IEventCacheService eventCacheService, IMapper mapper)
         {
-            _eventRepository = eventRepository ?? throw new ArgumentNullException(nameof(eventRepository));
+            _eventCacheService = eventCacheService ?? throw new ArgumentNullException(nameof(eventCacheService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
         }
@@ -32,7 +32,7 @@ namespace TheAdventureJunkieWebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<EventDto>>> GetEvents()
         {
-            var events = await _eventRepository.AllEventsAsync();
+            var events = await _eventCacheService.AllEventsAsync();
             return Ok(_mapper.Map<IEnumerable<EventDto>>(events));
         }
 
@@ -46,7 +46,7 @@ namespace TheAdventureJunkieWebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<EventDto>> GetEvent(int eventId)
         {
-            var evt = await _eventRepository.GetEventByIdAsync(eventId);
+            var evt = await _eventCacheService.GetEventByIdAsync(eventId);
             if (evt == null)
             {
                 return NotFound();
@@ -64,7 +64,7 @@ namespace TheAdventureJunkieWebAPI.Controllers
         public async Task<ActionResult<EventDto>> CreateEvent([FromBody] EventDto eventDto)
         {
             var evt = _mapper.Map<Event>(eventDto);
-            await _eventRepository.CreateEventAsync(evt);
+            await _eventCacheService.CreateEventAsync(evt);
             return CreatedAtAction(nameof(GetEvent), new { eventId = evt.EventId }, _mapper.Map<EventDto>(evt));
         }
 
@@ -79,7 +79,7 @@ namespace TheAdventureJunkieWebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> UpdateEvent(int eventId, [FromBody] EventDtoForUpdates eventUpdateDto)
         {
-            var evt = await _eventRepository.GetEventByIdAsync(eventId);
+            var evt = await _eventCacheService.GetEventByIdAsync(eventId);
             if (evt == null)
             {
                 return NotFound();
@@ -87,7 +87,7 @@ namespace TheAdventureJunkieWebAPI.Controllers
             else
             {
                 _mapper.Map(eventUpdateDto, evt);
-                await _eventRepository.UpdateEventAsync(evt);
+                await _eventCacheService.UpdateEventAsync(evt);
                 return Ok();
             }
         }
@@ -104,7 +104,7 @@ namespace TheAdventureJunkieWebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> PartiallyUpdateEvent(int eventId, [FromBody] JsonPatchDocument<EventDtoForUpdates> patchDocument)
         {
-            var evt = await _eventRepository.GetEventByIdAsync(eventId);
+            var evt = await _eventCacheService.GetEventByIdAsync(eventId);
             if (evt == null)
             {
                 return NotFound();
@@ -122,7 +122,7 @@ namespace TheAdventureJunkieWebAPI.Controllers
                     return ValidationProblem(ModelState);
                 }
                 _mapper.Map(eventToPatch, evt);
-                await _eventRepository.UpdateEventAsync(evt);
+                await _eventCacheService.UpdateEventAsync(evt);
                 return NoContent();
             }
         }
@@ -137,16 +137,15 @@ namespace TheAdventureJunkieWebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteEvent(int eventId)
         {
-            var evt = await _eventRepository.GetEventByIdAsync(eventId);
+            var evt = await _eventCacheService.GetEventByIdAsync(eventId);
             if (evt == null)
             {
                 return NotFound();
             }
             else
             {
-                await _eventRepository.DeleteEventAsync(eventId);
+                await _eventCacheService.DeleteEventAsync(eventId);
                 return NoContent();
-
             }
         }
     }
