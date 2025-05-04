@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using TheAdventureJunkieWebAPI.Contracts;
 using TheAdventureJunkieWebAPI.Data;
 using TheAdventureJunkieWebAPI.Models;
@@ -8,14 +9,15 @@ namespace TheAdventureJunkieWebAPI.Services
     public class EventRepository : IEventRepository
     {
         private readonly TheAdventureJunkieDbContext _context;
+
         public EventRepository(TheAdventureJunkieDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-
         }
+
         public async Task<IEnumerable<Event>> AllEventsAsync()
-        { 
-            return await _context.Events.OrderBy(e=>e.EventId).ToListAsync();
+        {
+            return await _context.Events.OrderBy(e => e.EventId).ToListAsync();
         }
 
         public async Task CreateEventAsync(Event evt)
@@ -31,7 +33,12 @@ namespace TheAdventureJunkieWebAPI.Services
         }
         public async Task<Event?> GetEventByIdAsync(int eventId)
         {
-            return await _context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
+            var evt = await _context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
+            if (evt != null)
+            {
+                return evt;
+            }
+            else return null;
         }
 
         public async Task DeleteEventAsync(int eventId)

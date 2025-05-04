@@ -14,17 +14,16 @@ namespace TheAdventureJunkieWebAPI.Controllers
     [ApiVersion(1)]
     public class CategoryController : ControllerBase
     {
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly ICategoryCacheService _categoryCacheService;
         private readonly IMapper _mapper;
         const int maxPageSize = 20;
 
-
-        public CategoryController(ICategoryRepository categoryRepository, IMapper mapper)
+        public CategoryController(ICategoryCacheService categoryCacheService, IMapper mapper)
         {
-            _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
+            _categoryCacheService = categoryCacheService ?? throw new ArgumentNullException(nameof(categoryCacheService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-
         }
+
         /// <summary>
         /// Get all categories with corresponding events. Includes Query parameters for Filtering, Searching and Pagination.
         /// </summary>
@@ -45,7 +44,7 @@ namespace TheAdventureJunkieWebAPI.Controllers
             }
             if (includeEvents)
             {
-                var categories = await _categoryRepository.AllCategoriesAsync(filterName, searchQuery, pageNumber, pageSize);
+                var categories = await _categoryCacheService.AllCategoriesAsync(filterName, searchQuery, pageNumber, pageSize);
                 if (categories.Count() < 1)
                 {
                     return NotFound();
@@ -54,10 +53,9 @@ namespace TheAdventureJunkieWebAPI.Controllers
             }
             else
             {
-                var categories = await _categoryRepository.AllCategoriesAsync();
+                var categories = await _categoryCacheService.AllCategoriesAsync();
                 return Ok(_mapper.Map<IEnumerable<CategoryDtoWithoutEvents>>(categories));
             }
         }
-
     }
 }
