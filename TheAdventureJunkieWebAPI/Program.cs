@@ -54,6 +54,46 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+app.Use(async (context, next) =>
+{
+    var path = context.Request.Path.Value;
+    if (path.StartsWith("/swagger") || path.StartsWith("/favicon.ico"))
+    {
+        await next();
+        return;
+    }
+
+    if (context.Request.Host.Host == "localhost")
+    {
+        await next();
+        return;
+    }
+
+    var config = context.RequestServices.GetRequiredService<IConfiguration>();
+
+    var origin = context.Request.Headers["Origin"].ToString();
+    var expectedOrigin = config["APIM:ExpectedOrigin"];
+    if (!string.IsNullOrWhiteSpace(expectedOrigin) && origin == expectedOrigin)
+    {
+        await next();
+        return;
+    }
+
+    var expectedToken = config["APIM:SecretToken"];
+    var receivedToken = context.Request.Headers["X-APIM-Signature"].FirstOrDefault();
+
+    if (receivedToken == expectedToken)
+    {
+        await next();
+        return;
+    }
+
+    context.Response.StatusCode = 401;
+    context.Response.ContentType = "application/json";
+    await context.Response.WriteAsync("{\"error\": \"Unauthorized. Use API Management.\"}");
+});
+
+
 app.UseAuthorization();
 
 app.MapControllers();
