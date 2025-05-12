@@ -1,0 +1,338 @@
+{
+	"info": {
+		"_postman_id": "0dd318e2-fc03-4f48-b2f1-0c819782930c",
+		"name": "The Adventure Junkie Web API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38145517"
+	},
+	"item": [
+		{
+			"name": "GET Events",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://taj-apim.azure-api.net/v1/Event",
+					"protocol": "https",
+					"host": [
+						"taj-apim",
+						"azure-api",
+						"net"
+					],
+					"path": [
+						"v1",
+						"Event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Events with EventId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://taj-apim.azure-api.net/v1/Event/{{eventId}}",
+					"protocol": "https",
+					"host": [
+						"taj-apim",
+						"azure-api",
+						"net"
+					],
+					"path": [
+						"v1",
+						"Event",
+						"{{eventId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Event Update Price",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"eventId\": 12,\r\n    \"name\": \"Ultra Flight\",\r\n    \"shortDescription\": \"Check in now\",\r\n    \"longDescription\": \"Experience the thrill of ultraflight, where you’ll soar above stunning vistas in a lightweight aircraft. Enjoy unmatched views, speed, and excitement in this high-flying adventure.\",\r\n    \"price\": 89.40,\r\n    \"imageUrl\": \"https://adventureblob.blob.core.windows.net/eventblobs/ultraflight.jpg\",\r\n    \"eventLocation\": null,\r\n    \"eventDateTime\": \"2025-12-06T11:45:00\",\r\n    \"categoryId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://taj-apim.azure-api.net/v1/Event/{{eventId}}",
+					"protocol": "https",
+					"host": [
+						"taj-apim",
+						"azure-api",
+						"net"
+					],
+					"path": [
+						"v1",
+						"Event",
+						"{{eventId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH Event Name",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n      \"op\": \"replace\",\r\n      \"path\": \"/name\",\r\n      \"value\": \"High Ultra Flight\"\r\n      }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://taj-apim.azure-api.net/v1/Event/{{eventId}}",
+					"protocol": "https",
+					"host": [
+						"taj-apim",
+						"azure-api",
+						"net"
+					],
+					"path": [
+						"v1",
+						"Event",
+						"{{eventId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Event",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"Mountain Flight\",\r\n        \"shortDescription\": \"Fly High\",\r\n        \"longDescription\": \"Experience the serene mountain and vallye as you sour through the sky. Watch Mount Everest close up and simulate the thrill of being on top of the world.\",\r\n        \"price\": 119.99,\r\n        \"imageUrl\": \"https://adventureblob.blob.core.windows.net/eventblobs/mountainflight.jpg\",\r\n        \"eventLocation\": null,\r\n        \"eventDateTime\": \"2025-06-11T08:15:00\",\r\n        \"categoryId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://taj-apim.azure-api.net/v1/Event",
+					"protocol": "https",
+					"host": [
+						"taj-apim",
+						"azure-api",
+						"net"
+					],
+					"path": [
+						"v1",
+						"Event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Event",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://taj-apim.azure-api.net/v1/Event/{{newEventToDelete}}",
+					"protocol": "https",
+					"host": [
+						"taj-apim",
+						"azure-api",
+						"net"
+					],
+					"path": [
+						"v1",
+						"Event",
+						"{{newEventToDelete}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Categories without Events",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://taj-apim.azure-api.net/v1/Category?includeEvents=false",
+					"protocol": "https",
+					"host": [
+						"taj-apim",
+						"azure-api",
+						"net"
+					],
+					"path": [
+						"v1",
+						"Category"
+					],
+					"query": [
+						{
+							"key": "includeEvents",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Categories with Events",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://taj-apim.azure-api.net/v1/Category",
+					"protocol": "https",
+					"host": [
+						"taj-apim",
+						"azure-api",
+						"net"
+					],
+					"path": [
+						"v1",
+						"Category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Category Filter Name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://taj-apim.azure-api.net/v1/Category?filterName=Safari",
+					"protocol": "https",
+					"host": [
+						"taj-apim",
+						"azure-api",
+						"net"
+					],
+					"path": [
+						"v1",
+						"Category"
+					],
+					"query": [
+						{
+							"key": "filterName",
+							"value": "Safari"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Category Search Query",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://taj-apim.azure-api.net/v1/Category?searchQuery=sky",
+					"protocol": "https",
+					"host": [
+						"taj-apim",
+						"azure-api",
+						"net"
+					],
+					"path": [
+						"v1",
+						"Category"
+					],
+					"query": [
+						{
+							"key": "searchQuery",
+							"value": "sky"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Category with Page Size & Number",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://taj-apim.azure-api.net/v1/Category?searchQuery=the&pageNumber=3&pageSize=1",
+					"protocol": "https",
+					"host": [
+						"taj-apim",
+						"azure-api",
+						"net"
+					],
+					"path": [
+						"v1",
+						"Category"
+					],
+					"query": [
+						{
+							"key": "searchQuery",
+							"value": "the"
+						},
+						{
+							"key": "pageNumber",
+							"value": "3"
+						},
+						{
+							"key": "pageSize",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "eventId",
+			"value": "12",
+			"type": "string"
+		},
+		{
+			"key": "newEventToDelete",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
