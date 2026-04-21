@@ -38,7 +38,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IEventCacheService, EventCacheService>();
 builder.Services.AddScoped<ICategoryCacheService, CategoryCacheService>();
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(cfg => { /* custom config if needed */ }, typeof(TheAdventureJunkieWebAPI.Profiles.CategoryProfile).Assembly);
 
 builder.Services.AddApiVersioning(options =>
 {
