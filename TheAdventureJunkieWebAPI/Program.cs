@@ -22,11 +22,14 @@ builder.Services.AddSwaggerGen(setupAction =>
     var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
 
     setupAction.IncludeXmlComments(xmlCommentsFullPath);
-    setupAction.AddServer(new OpenApiServer
-    {
-        Url = "https://taj-apim.azure-api.net" // Tell Swagger UI to send requests here
-    });
 
+    if (!builder.Environment.IsDevelopment())
+    {
+        setupAction.AddServer(new OpenApiServer
+        {
+            Url = "https://taj-apim.azure-api.net"
+        });
+    }
 });
 
 builder.Services.AddDbContext<TheAdventureJunkieDbContext>(options =>
@@ -73,19 +76,13 @@ app.UseHttpsRedirection();
 
 app.Use(async (context, next) =>
 {
-    var path = context.Request.Path.Value;
-    if (path.StartsWith("/swagger") || path.StartsWith("/favicon.ico"))
+    var path = context.Request.Path.Value ?? string.Empty;
+
+    if (path.StartsWith("/swagger") || path.StartsWith("/favicon.ico") || app.Environment.IsDevelopment())
     {
         await next();
         return;
     }
-
-    // Uncomment the following lines to allow requests from localhost
-    /*if (context.Request.Host.Host == "localhost")
-    {
-        await next();
-        return;
-    }*/
 
     var config = context.RequestServices.GetRequiredService<IConfiguration>();
     var expectedToken = config["APIM:SecretToken"];
@@ -99,18 +96,16 @@ app.Use(async (context, next) =>
 
     context.Response.StatusCode = 401;
     context.Response.ContentType = "application/json";
+
     var errorResponse = new
     {
         type = "https://tools.ietf.org/html/rfc9110#section-15.5.2",
         title = "Unauthorized, Please use APIM instance",
         status = 401,
-        traceId = context.TraceIdentifier // Unique trace ID for this request
+        traceId = context.TraceIdentifier
     };
 
-    // Serialize the error response to JSON and write it to the response
-    var jsonResponse = JsonConvert.SerializeObject(errorResponse);
-    await context.Response.WriteAsync(jsonResponse);
-
+    await context.Response.WriteAsync(JsonConvert.SerializeObject(errorResponse));
 });
 
 
